@@ -13,6 +13,10 @@ class GameManager {
     this.characterList.push(character);
   }
 
+  addMonster(monster) {
+    this.monsterList.push(monster);
+  }
+
   showCharacterStatus () {
     this.ctx.clearRect(0,0,640,480)
     this.ctx.font = `28px serif`;
@@ -27,9 +31,7 @@ class GameManager {
     })
   }
 
-  addMonster(monster) {
-    this.monsterList.push(monster);
-  }
+
 
   // 行動順を決定するメソッド
   decideActionOrder() {
