@@ -2,10 +2,11 @@ class GameManager {
   constructor() {
     const canvas = document.getElementById("canvas")
     this.ctx = canvas.getContext("2d")
+    this.characterList = []; // キャラのHP/MPなど...
     this.monsterList = []; // 敵のHP/MPなど...
   }
-  addMonster(monster) {
-    this.monsterList.push(monster);
+  addMonster(character) {
+    this.characterList.push(character);
   }
 
   showCharacterStatus() {
@@ -15,7 +16,7 @@ class GameManager {
     this.ctx.fillText("HP", 20, 50)
     this.ctx.fillText("MP", 20, 90)
     this.ctx.fillText("名前", 20, 130)
-    this.monsterList.forEach((chara, index) => {
+    this.characterList.forEach((chara, index) => {
       this.ctx.fillText(chara.hp, 190 * index + 140, 50)
       this.ctx.fillText(chara.mp, 190 * index + 140, 90)
       this.ctx.fillText(chara.name, 190 * index + 140, 130)
@@ -56,10 +57,9 @@ class MonsterDescription {
   }
 }
 
-
-var moster1 = new MonsterDescription("がいこつ", 100, 80, 0, 100, 100);
-var moster2 = new MonsterDescription("パンプキン", 100, 55, 0, 100, 100);
-var moster3 = new MonsterDescription("おばけ", 100, 45, 50, 100, 100);
+var chara1 = new PlayerCharacter("アベル", 100, 0, 70, 100, 100);
+var chara2 = new PlayerCharacter("カイン", 100, 10, 60,100, 100);
+var chara3 = new PlayerCharacter("プリン", 100, 30, 50, 100, 100);
 
 var gameManager = new GameManager();
 gameManager.addMonster(moster1);
