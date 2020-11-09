@@ -4,6 +4,7 @@ class GameManager {
     this.ctx = canvas.getContext("2d")
     this.setAction = 350;
     this.characterList = []; 
+    this.message = null;
     this.monsterList = []; // 敵のHP/MPなど...
   }
   addCharacter(character) {
@@ -35,6 +36,7 @@ class GameManager {
       this.ctx.fillText(action.name, 50, index * 30 + 350)
     })
     this.ctx.fillText("▷", 20, this.setAction)
+    this.ctx.strokeRect(250, 330, 350, 120);
   }
   chooseCommand(e) {
     if (e.key === "ArrowDown" && this.setAction < 440) {
@@ -49,17 +51,37 @@ class GameManager {
     }
     if (e.key === "Enter") {
       if (this.setAction === 350) {
-        console.log("たたかう")
+        this.message = "ゆうしゃはこうげきした";
+        this.ctx.font = `18px serif`;
+        this.ctx.clearRect(255, 335, 330, 100);
+        this.ctx.fillText(this.message, 260, 360);
       }
       if (this.setAction === 380) {
-        console.log("ぼうぎょ")
+        this.message = "ゆうしゃはぼうぎょした";
+        this.ctx.font = `18px serif`;
+        this.ctx.clearRect(255, 335, 330, 100);
+        this.ctx.fillText(this.message, 260, 360);
       }
       if (this.setAction === 410) {
-        console.log("まほう")
+        this.message = "ゆうしゃはまほうをかけた";
+        this.ctx.font = `18px serif`;
+        this.ctx.clearRect(255, 335, 330, 100);
+        this.ctx.fillText(this.message, 260, 360);
       }
       if (this.setAction === 440) {
-        console.log("どうぐ")
+        this.message = "ゆうしゃはどうぐをとりだした";
+        this.ctx.font = `18px serif`;
+        this.ctx.clearRect(255, 335, 330, 100);
+        this.ctx.fillText(this.message, 260, 360);
       }
+    }
+  }
+  showMessage() {
+    this.ctx.strokeRect(250, 330, 350, 120);
+    console.log(this.message)
+    this.ctx.fillText(this.message, 260, 360)
+    if (this.message !== null) {
+      this.ctx.fillText(this.message, 260, 360)
     }
   }
 }
@@ -118,7 +140,7 @@ gameManager.addCharacter(chara1);
 gameManager.addCharacter(chara2);
 gameManager.addCharacter(chara3);
 gameManager.showCharacterStatus();
-gameManager.showCommand()
+gameManager.showCommand();
 
 window.addEventListener("keydown", (e) => {
   gameManager.chooseCommand(e);
