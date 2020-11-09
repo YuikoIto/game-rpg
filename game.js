@@ -27,61 +27,53 @@ class GameManager {
   }
   showCommand() {
     this.actions = [
-      { name: "たたかう"},
-      { name: "ぼうぎょ"},
-      { name: "まほう"},
-      { name: "どうぐ"},
+      { name: "たたかう" },
+      { name: "ぼうぎょ" },
+      { name: "まほう" },
+      { name: "どうぐ" },
     ]
     this.actions.forEach((action, index) => {
       this.ctx.fillText(action.name, 50, index * 30 + 350)
     })
+    this.ctx.font = `28px serif`;
     this.ctx.fillText("▷", 20, this.setAction)
     this.ctx.strokeRect(250, 330, 350, 120);
+  }
+  showMessage(message) {
+    this.ctx.font = `18px serif`;
+    this.ctx.clearRect(255, 335, 330, 100);
+    this.ctx.fillText(message, 260, 360);
   }
   chooseCommand(e) {
     if (e.key === "ArrowDown" && this.setAction < 440) {
       this.setAction += 30;
-      this.ctx.clearRect(20,300, 25, 480)
+      this.ctx.clearRect(20, 300, 25, 480)
+      this.ctx.font = `28px serif`;
       this.ctx.fillText("▷", 20, this.setAction)
     }
     if (e.key === "ArrowUp" && this.setAction > 350) {
       this.setAction -= 30;
-      this.ctx.clearRect(20,300, 25, 480)
+      this.ctx.clearRect(20, 300, 25, 480)
+      this.ctx.font = `28px serif`;
       this.ctx.fillText("▷", 20, this.setAction)
     }
     if (e.key === "Enter") {
       if (this.setAction === 350) {
         this.message = "ゆうしゃはこうげきした";
-        this.ctx.font = `18px serif`;
-        this.ctx.clearRect(255, 335, 330, 100);
-        this.ctx.fillText(this.message, 260, 360);
+        this.showMessage(this.message);
       }
       if (this.setAction === 380) {
         this.message = "ゆうしゃはぼうぎょした";
-        this.ctx.font = `18px serif`;
-        this.ctx.clearRect(255, 335, 330, 100);
-        this.ctx.fillText(this.message, 260, 360);
+        this.showMessage(this.message);
       }
       if (this.setAction === 410) {
         this.message = "ゆうしゃはまほうをかけた";
-        this.ctx.font = `18px serif`;
-        this.ctx.clearRect(255, 335, 330, 100);
-        this.ctx.fillText(this.message, 260, 360);
+        this.showMessage(this.message);
       }
       if (this.setAction === 440) {
         this.message = "ゆうしゃはどうぐをとりだした";
-        this.ctx.font = `18px serif`;
-        this.ctx.clearRect(255, 335, 330, 100);
-        this.ctx.fillText(this.message, 260, 360);
+        this.showMessage(this.message);
       }
-    }
-  }
-  showMessage() {
-    this.ctx.strokeRect(250, 330, 350, 120);
-    console.log(this.message)
-    this.ctx.fillText(this.message, 260, 360)
-    if (this.message !== null) {
-      this.ctx.fillText(this.message, 260, 360)
     }
   }
 }
