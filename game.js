@@ -6,9 +6,13 @@ class GameManager {
     this.characterList = []; 
     this.message = null;
     this.monsterList = []; // 敵のHP/MPなど...
+    this.defeatedMonsterNames = null;
   }
   addCharacter(character) {
     this.characterList.push(character);
+  }
+  addMonsterCharacter(monster) {
+    this.monsterList.push(monster);
   }
 
   showCharacterStatus() {
@@ -61,6 +65,20 @@ class GameManager {
       if (this.setAction === 350) {
         this.message = "ゆうしゃはこうげきした";
         this.showMessage(this.message);
+        for (var i = 0; i < this.characterList.length; i++) {
+          this.monsterList[i].hp -= this.characterList[i].mp;
+  
+          if (this.monsterList[i].hp < 0) {
+            if (this.defeatedMonsterNames === null) {
+              this.defeatedMonsterNames = this.monsterList[i].name
+            } else if(this.defeatedMonsterNames.indexOf(this.monsterList[i].name) === -1){
+              this.defeatedMonsterNames = this.defeatedMonsterNames + "と" + this.monsterList[i].name
+            }
+            this.message = this.defeatedMonsterNames + "はまけた";
+          }
+        }
+        console.log(this.monsterList)
+        this.showMessage(this.message);
       }
       if (this.setAction === 380) {
         this.message = "ゆうしゃはぼうぎょした";
@@ -100,28 +118,25 @@ new Monster(100, 200, "./img/bone_ape.png");
 new Monster(260, 200, "./img/jacklantern.png");
 new Monster(420, 200, "./img/poltergeist.png");
 
-// const BATTLE_TYPE_ATTACK = "attack"
-// const BATTLE_TYPE_DEFENSE = "defense" // "defense" === "defence"
-// const BATTLE_TYPE_MAGIC = "magic"
-// const BATTLE_TYPE_ITEM = "item"
 
 class PlayerCharacter {
   constructor(name, hp, mp) {
     this.name = name;
     this.hp = hp;
     this.mp = mp;
-    // this.actions = [
-    //   { name: "たたかう", type: BATTLE_TYPE_ATTACK },
-    //   { name: "ぼうぎょ", type: BATTLE_TYPE_DEFENSE },
-    //   { name: "まほう", type: BATTLE_TYPE_MAGIC },
-    //   { name: "どうぐ", type: BATTLE_TYPE_ITEM },
-    // ]
+  }
+}
+class MonsterCharacter {
+  constructor(name, hp, mp) {
+    this.name = name;
+    this.hp = hp;
+    this.mp = mp;
   }
 }
 
-// var moster1 = new MonsterDescription("がいこつ", 100, 80, 0, 100, 100);
-// var moster2 = new MonsterDescription("パンプキン", 100, 55, 0, 100, 100);
-// var moster3 = new MonsterDescription("おばけ", 100, 45, 50, 100, 100);
+var moster1 = new MonsterCharacter("がいこつ", 100, 10);
+var moster2 = new MonsterCharacter("パンプキン", 100, 30);
+var moster3 = new MonsterCharacter("おばけ", 100, 20);
 var chara1 = new PlayerCharacter("アベル", 100, 80);
 var chara2 = new PlayerCharacter("カイン", 100, 55);
 var chara3 = new PlayerCharacter("プリン", 100, 45);
@@ -131,6 +146,9 @@ var gameManager = new GameManager();
 gameManager.addCharacter(chara1);
 gameManager.addCharacter(chara2);
 gameManager.addCharacter(chara3);
+gameManager.addMonsterCharacter(moster1);
+gameManager.addMonsterCharacter(moster2);
+gameManager.addMonsterCharacter(moster3);
 gameManager.showCharacterStatus();
 gameManager.showCommand();
 
