@@ -2,22 +2,12 @@ class GameManager {
   constructor() {
     const canvas = document.getElementById("canvas")
     this.ctx = canvas.getContext("2d")
-    this.setAction = 320;
+    this.setAction = 350;
     this.characterList = []; 
     this.monsterList = []; // 敵のHP/MPなど...
   }
   addCharacter(character) {
     this.characterList.push(character);
-  }
-  move(e) {
-    if (e.key === "ArrowDown" && this.setAction < 415) {
-      this.setAction += 30;
-      this.ctx.fillText("▷", 20, this.setAction)
-    }
-    if (e.key === "ArrowUp" && this.setAction > 320) {
-      this.setAction -= 30;
-      this.ctx.fillText("▷", 20, this.setAction)
-    }
   }
 
   showCharacterStatus() {
@@ -27,30 +17,51 @@ class GameManager {
     this.ctx.fillText("HP", 20, 50)
     this.ctx.fillText("MP", 20, 90)
     this.ctx.fillText("名前", 20, 130)
+    
     this.characterList.forEach((chara, index) => {
       this.ctx.fillText(chara.hp, 190 * index + 140, 50)
       this.ctx.fillText(chara.mp, 190 * index + 140, 90)
       this.ctx.fillText(chara.name, 190 * index + 140, 130)
-      chara.actions.forEach((action, index) => {
-        this.ctx.fillText(action.name, 50, index * 30 + 350)
-      })
-      
-      // this.ctx.moveTo(35, this.setAction + 15);
-      // this.ctx.lineTo(20, this.setAction);
-      // this.ctx.lineTo(20, this.setAction + 30);
-      // this.ctx.fill();
     })
   }
-  // move(e) {
-  //   this.ctx.clearRect(20, 20, 325, 500);
-  //   if (e.key === "ArrowDown" && setAction <= 440) {
-  //     this.setAction += 30;
-  //   }
-  //   if (e.key === "ArrowUp" && this.setAction >= 325) {
-  //     this.setAction -= 30;
-  //   }
-  //   this.showCharacterStatus();
-  // }
+  showCommand() {
+    this.actions = [
+      { name: "たたかう"},
+      { name: "ぼうぎょ"},
+      { name: "まほう"},
+      { name: "どうぐ"},
+    ]
+    this.actions.forEach((action, index) => {
+      this.ctx.fillText(action.name, 50, index * 30 + 350)
+    })
+    this.ctx.fillText("▷", 20, this.setAction)
+  }
+  chooseCommand(e) {
+    if (e.key === "ArrowDown" && this.setAction < 440) {
+      this.setAction += 30;
+      this.ctx.clearRect(20,300, 25, 480)
+      this.ctx.fillText("▷", 20, this.setAction)
+    }
+    if (e.key === "ArrowUp" && this.setAction > 350) {
+      this.setAction -= 30;
+      this.ctx.clearRect(20,300, 25, 480)
+      this.ctx.fillText("▷", 20, this.setAction)
+    }
+    if (e.key === "Enter") {
+      if (this.setAction === 350) {
+        console.log("たたかう")
+      }
+      if (this.setAction === 380) {
+        console.log("ぼうぎょ")
+      }
+      if (this.setAction === 410) {
+        console.log("まほう")
+      }
+      if (this.setAction === 440) {
+        console.log("どうぐ")
+      }
+    }
+  }
 }
 
 class Monster {
@@ -71,26 +82,26 @@ class Monster {
   }
 }
 
-new Monster(100, 200, "./img/bone_ape.png")
-new Monster(260, 200, "./img/jacklantern.png")
-new Monster(420, 200, "./img/poltergeist.png")
+new Monster(100, 200, "./img/bone_ape.png");
+new Monster(260, 200, "./img/jacklantern.png");
+new Monster(420, 200, "./img/poltergeist.png");
 
-const BATTLE_TYPE_ATTACK = "attack"
-const BATTLE_TYPE_DEFENSE = "defense" // "defense" === "defence"
-const BATTLE_TYPE_MAGIC = "magic"
-const BATTLE_TYPE_ITEM = "item"
+// const BATTLE_TYPE_ATTACK = "attack"
+// const BATTLE_TYPE_DEFENSE = "defense" // "defense" === "defence"
+// const BATTLE_TYPE_MAGIC = "magic"
+// const BATTLE_TYPE_ITEM = "item"
 
 class PlayerCharacter {
   constructor(name, hp, mp) {
     this.name = name;
     this.hp = hp;
     this.mp = mp;
-    this.actions = [
-      { name: "たたかう", type: BATTLE_TYPE_ATTACK },
-      { name: "ぼうぎょ", type: BATTLE_TYPE_DEFENSE },
-      { name: "まほう", type: BATTLE_TYPE_MAGIC },
-      { name: "どうぐ", type: BATTLE_TYPE_ITEM },
-    ]
+    // this.actions = [
+    //   { name: "たたかう", type: BATTLE_TYPE_ATTACK },
+    //   { name: "ぼうぎょ", type: BATTLE_TYPE_DEFENSE },
+    //   { name: "まほう", type: BATTLE_TYPE_MAGIC },
+    //   { name: "どうぐ", type: BATTLE_TYPE_ITEM },
+    // ]
   }
 }
 
@@ -107,7 +118,8 @@ gameManager.addCharacter(chara1);
 gameManager.addCharacter(chara2);
 gameManager.addCharacter(chara3);
 gameManager.showCharacterStatus();
+gameManager.showCommand()
 
 window.addEventListener("keydown", (e) => {
-  gameManager.move(e);
+  gameManager.chooseCommand(e);
 })
