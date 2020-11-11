@@ -7,6 +7,7 @@ class GameManager {
     this.message = null;
     this.monsterList = []; // 敵のHP/MPなど...
     this.defeatedMonsterNames = null;
+    this.defeateCharacterNames = null;
   }
   addCharacter(character) {
     this.characterList.push(character);
@@ -48,6 +49,14 @@ class GameManager {
     this.ctx.clearRect(255, 335, 330, 100);
     this.ctx.fillText(message, 260, 360);
   }
+
+  gameFinish(charactor) {
+    if (charactor.hp < 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   chooseCommand(e) {
     if (e.key === "ArrowDown" && this.setAction < 440) {
       this.setAction += 30;
@@ -65,20 +74,60 @@ class GameManager {
       if (this.setAction === 350) {
         this.message = "ゆうしゃはこうげきした";
         this.showMessage(this.message);
-        for (var i = 0; i < this.characterList.length; i++) {
+
+        for (var i = 0; i < this.monsterList.length; i++) {
           this.monsterList[i].hp -= this.characterList[i].mp;
-  
-          if (this.monsterList[i].hp < 0) {
+          if (this.monsterList.every(this.gameFinish)) {
+            this.message = "ゆうしゃのかち";
+            setTimeout(() => {
+              this.showMessage(this.message);
+            }, 500)
+            break;
+          }
+          if (this.monsterList[i].hp <= 0) {
             if (this.defeatedMonsterNames === null) {
               this.defeatedMonsterNames = this.monsterList[i].name
-            } else if(this.defeatedMonsterNames.indexOf(this.monsterList[i].name) === -1){
+            } else if (this.defeatedMonsterNames.indexOf(this.monsterList[i].name) === -1){
               this.defeatedMonsterNames = this.defeatedMonsterNames + "と" + this.monsterList[i].name
             }
             this.message = this.defeatedMonsterNames + "はまけた";
+          } else {
+            this.message = "まだモンスターはげんきだ";
           }
         }
-        console.log(this.monsterList)
-        this.showMessage(this.message);
+        setTimeout(() => {
+          this.showMessage(this.message);
+        }, 500)
+
+        if (this.message !== "ゆうしゃのかち") {
+          this.message = "こうげきをうけた";
+          setTimeout(() => {
+            this.showMessage(this.message);
+          }, 1000)
+          for (var i = 0; i < this.characterList.length; i++) {
+            this.characterList[i].hp -= this.monsterList[i].mp;
+            if (this.characterList.every(this.gameFinish)) {
+              this.message = "ゆうしゃのまけ";
+              setTimeout(() => {
+                this.showMessage(this.message);
+              }, 1500)
+              break;
+            }
+            if (this.characterList[i].hp < 0) {
+              if (this.defeateCharacterNames === null) {
+                this.defeateCharacterNames = this.characterList[i].name
+              } else if (this.defeateCharacterNames.indexOf(this.characterList[i].name) === -1) {
+                this.defeateCharacterNames = this.defeateCharacterNames + "と" + this.characterList[i].name
+              }
+              this.message = this.defeatedMonsterNames + "はまけた";
+            } else {
+              this.message = "まだゆうしゃはげんきだ";
+            }
+          }
+          setTimeout(() => {
+            this.showMessage(this.message);
+          }, 1500)
+        }
       }
       if (this.setAction === 380) {
         this.message = "ゆうしゃはぼうぎょした";
@@ -134,9 +183,9 @@ class MonsterCharacter {
   }
 }
 
-var moster1 = new MonsterCharacter("がいこつ", 100, 10);
+var moster1 = new MonsterCharacter("がいこつ", 100, 60);
 var moster2 = new MonsterCharacter("パンプキン", 100, 30);
-var moster3 = new MonsterCharacter("おばけ", 100, 20);
+var moster3 = new MonsterCharacter("おばけ", 100, 160);
 var chara1 = new PlayerCharacter("アベル", 100, 80);
 var chara2 = new PlayerCharacter("カイン", 100, 55);
 var chara3 = new PlayerCharacter("プリン", 100, 45);
